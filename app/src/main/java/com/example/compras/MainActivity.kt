@@ -21,8 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //Menú
-        var toolbar : Toolbar = findViewById(R.id.toolbar) //busco la toolbar
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.title="title"
 
 
