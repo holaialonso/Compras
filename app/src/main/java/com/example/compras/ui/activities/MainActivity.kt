@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         //Recycler View de los productos
         productList = getProducts() // Devuelve la lista de los productos
-        ProductAdapter = ProductAdapter(productList, this)
+        ProductAdapter = ProductAdapter(productList, this, "main")
 
         val recyclerProducts: RecyclerView = findViewById(R.id.recycler_products)
         recyclerProducts.adapter = ProductAdapter
