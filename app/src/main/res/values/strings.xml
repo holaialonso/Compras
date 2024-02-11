@@ -2,7 +2,9 @@
     <string name="app_name">Compras</string>
 
     <string-array name="category">
-        <item>1</item>
-        <item>2</item>
+        <item>Categorías</item>
+        <item>Categoria 1</item>
+        <item>Categoria 2</item>
+        <item>Categoria 3</item>
     </string-array>
 </resources>

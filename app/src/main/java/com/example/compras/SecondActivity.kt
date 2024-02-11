@@ -12,11 +12,14 @@ class SecondActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_second)
+
+        //Parte gráfica + lógica del activity
+        var binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //Menú
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.title="title"
+        supportActionBar?.title="app compras"
     }
 
 
