@@ -45,7 +45,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:scrollbars="vertical" />
 
     </LinearLayout>
@@ -54,7 +54,7 @@
         android:id="@+id/view2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#f2f2f2"
+        android:background="@color/primaryPink"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.17"
@@ -69,6 +69,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="10dp"
             android:text="Total"
+            android:textColor="#ffffff"
             android:textAlignment="textEnd"
             android:textAllCaps="true"
             android:textSize="15dp"
@@ -82,6 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="XX.XX €"
+            android:textColor="#ffffff"
             android:textAlignment="textEnd"
             android:textAllCaps="true"
             android:textSize="30dp"

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.compras.R
 import com.example.compras.adapter.ProductAdapter
@@ -37,8 +38,7 @@ class SecondActivity : AppCompatActivity() {
 
         val recyclerProducts: RecyclerView = findViewById(R.id.resume_cart)
         recyclerProducts.adapter = ProductAdapter
-        recyclerProducts.layoutManager = GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false)
-
+        recyclerProducts.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
 
