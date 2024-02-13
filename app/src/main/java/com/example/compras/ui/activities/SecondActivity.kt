@@ -1,6 +1,5 @@
 package com.example.compras.ui.activities
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.widget.TextView
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.compras.R
 import com.example.compras.adapter.ProductAdapter
 import com.example.compras.databinding.ActivitySecondBinding
-import com.example.compras.model.Cart
 import com.example.compras.model.Product
 
 
@@ -20,7 +18,8 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
     private lateinit var binding: ActivitySecondBinding
     private lateinit var recyclerProducts : RecyclerView
     private lateinit var ProductAdapter : ProductAdapter
-    private lateinit var cart : Cart
+    private lateinit var cart : ArrayList<Product>
+    private lateinit var totalCart : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +33,22 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
         supportActionBar?.title="" //sin literal en la navegacion
 
         //Carrito: recuperar el objeto del intent
-        cart = intent.extras!!.getSerializable("cart") as Cart
-        makeTotalCart(cart.getProducts())
+        cart = intent.extras!!.getSerializable("cart") as ArrayList<Product>
+
 
         //Recycler View
         //Pinto la lista de productos en el RecyclerView
-        ProductAdapter = ProductAdapter(cart.getProducts(), this, "second")
+        ProductAdapter = ProductAdapter(ArrayList(), this, "second")
+        makeSetProductsCart(cart);
 
         recyclerProducts = findViewById(R.id.resume_cart)
         recyclerProducts.adapter = ProductAdapter
         recyclerProducts.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        //Total de los productos: lo imprimo en pantalla
+        totalCart = findViewById(R.id.amount_total)
+        ProductAdapter.makeTotal()
+
     }
 
 
@@ -54,49 +59,34 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
     }
 
 
-    fun getProducts() : ArrayList<Product>{
+    //DATOS QUE MANEJA LA ACTIVITY
+        //Método que setea los datos del cart en el ProductAdapter
+        fun makeSetProductsCart(cart : ArrayList<Product>){
 
-        var aux : ArrayList<Product> = ArrayList()
+            for(product in cart){
+                ProductAdapter.addElement(product)
+            }
 
-        aux.add(Product( "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg", 1, "iPhone 9", 549.0));
-        aux.add(Product( "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg", 2, "iPhone X", 899.0));
-        aux.add(Product( "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg", 3, "iPhone 14", 549.0));
-        aux.add(Product( "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg", 4, "iPhone 15", 549.0));
-        aux.add(Product( "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg", 5, "iPhone 16", 549.0));
-
-        return aux
-
-    }
-
-    fun makeTotalCart(products: ArrayList<Product>) {
-
-        var total : Double = 0.0
-
-        for(product in products){
-
-            total=total+product.price
         }
 
-        findViewById<TextView>(R.id.amount_total).text=total.toString()+" €"
-
-    }
 
 
-    override fun onProductSelected(product: Product) {
-        TODO("Not yet implemented")
-    }
+    //COMUNICACIÓN ADAPTADOR -> ACTIVITY
+    // Método que comunica el adaptador con la activity
+        override fun onProductSelected(product: Product) {
+            TODO("Not yet implemented")
+        }
 
-    override fun onProductSelectedRemove(position: Int) {
+        override fun onProductSelectedRemove(position: Int) {
 
-        //Elimino el elemento del cart
-        ProductAdapter.removeElement(position)
+            //Elimino el elemento del cart
+            ProductAdapter.removeElement(position)
 
-    }
+        }
 
-    override fun onMakeTotalCart(products: ArrayList<Product>) {
-        makeTotalCart(products)
-    }
-
+        override fun onPrintTotalCart(total: Double) {
+            totalCart.text=total.toString()+" €"
+        }
 
 
 }
