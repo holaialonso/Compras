@@ -47,7 +47,13 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
             setContentView(binding.root)
 
         //Cart
-            cart = ArrayList()
+            //Compruebo si viene de la secondActivity -> si lo tengo, lo inicializo con ese valor
+            if (intent.hasExtra("cart")) {
+                cart = intent.extras!!.getSerializable("cart") as ArrayList<Product>
+            }
+            else { //en caso contrario ->  inicializo vacio
+                cart = ArrayList()
+            }
 
         //Menú
             setSupportActionBar(binding.toolbar)

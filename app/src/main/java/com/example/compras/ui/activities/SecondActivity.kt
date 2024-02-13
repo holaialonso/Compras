@@ -166,5 +166,12 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
             showEmptyCart()
         }
 
+    //CART -> PASARLO A LA MAINACTIVITY
+    override fun onBackPressed() {
+
+        intent.putExtra("cart", cart) //paso la variable a la mainActivity
+        super.onBackPressed()
+
+    }
 
 }
