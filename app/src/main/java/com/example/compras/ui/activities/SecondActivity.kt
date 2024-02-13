@@ -147,7 +147,7 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
 
         }
 
-        override fun onPrintTotalCart(total: Double, type : String) {
+        override fun onPrintTotalCart(total: String, type : String) {
 
             when(type){
                 "textview" ->{

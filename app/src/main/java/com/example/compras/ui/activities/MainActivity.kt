@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
             TODO("Not yet implemented")
         }
 
-        override fun onPrintTotalCart(total: Double, type: String) {
+        override fun onPrintTotalCart(total: String, type: String) {
             TODO("Not yet implemented")
         }
 
