@@ -35,10 +35,25 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
 
         //Menú
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.title="" //sin literal en la navegacion
+        supportActionBar?.title="Compras" //sin literal en la navegacion
 
-        //Carrito: recuperar el objeto del intent
-        cart = intent.extras!!.getSerializable("cart") as ArrayList<Product>
+        //Cart -> recupero el valor
+            cart = ArrayList()
+
+            //1. Si tiene el estado guardado
+            if (savedInstanceState != null) {
+                print("Recupero el estado")
+                val savedArrayList = savedInstanceState.getSerializable("cart")
+                if (savedArrayList is ArrayList<*>) {
+                    cart = savedArrayList as ArrayList<Product>
+                }
+            }
+
+            //2. Compruebo si viene de la secondActivity -> si lo tengo, lo inicializo con ese valor
+            if (intent.hasExtra("cart")) {
+                cart = intent.extras!!.getSerializable("cart") as ArrayList<Product>
+            }
+
 
 
         //Recycler View
@@ -61,6 +76,13 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
 
     }
 
+
+    //ESTADO -> PORTRAIT <-> LANDSCAPE
+        //Método para guardar el estado
+        override fun onSaveInstanceState(outState: Bundle) {
+            super.onSaveInstanceState(outState)
+            outState.putSerializable("cart", cart)
+        }
 
     //MENÚ
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

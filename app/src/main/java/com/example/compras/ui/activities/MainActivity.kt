@@ -47,17 +47,26 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
             setContentView(binding.root)
 
         //Cart
-            //Compruebo si viene de la secondActivity -> si lo tengo, lo inicializo con ese valor
+            cart = ArrayList()
+
+            //1. Si tiene el estado guardado
+            if (savedInstanceState != null) {
+                print("Recupero el estado")
+                val savedArrayList = savedInstanceState.getSerializable("cart")
+                if (savedArrayList is ArrayList<*>) {
+                    cart = savedArrayList as ArrayList<Product>
+                }
+            }
+
+            //2. Compruebo si viene de la secondActivity -> si lo tengo, lo inicializo con ese valor
             if (intent.hasExtra("cart")) {
                 cart = intent.extras!!.getSerializable("cart") as ArrayList<Product>
             }
-            else { //en caso contrario ->  inicializo vacio
-                cart = ArrayList()
-            }
+
 
         //Menú
             setSupportActionBar(binding.toolbar)
-            supportActionBar?.title="" //no quiero que salga ningún literal en la barra de navegacón
+            supportActionBar?.title="Compras" //no quiero que salga ningún literal en la barra de navegacón
 
         //Spinner
             spinnerCategory = findViewById(R.id.select_categories) //hago el binding
@@ -112,6 +121,14 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
 
     }
 
+
+    //ESTADO -> PORTRAIT <-> LANDSCAPE
+        //Método para guardar el estado
+        override fun onSaveInstanceState(outState: Bundle) {
+            println("serializado cart ->"+cart.size)
+            super.onSaveInstanceState(outState)
+            outState.putSerializable("cart", cart)
+        }
 
     //MENÚ
         override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -236,5 +253,6 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
         override fun onNothingSelected(parent: AdapterView<*>?) {
             TODO("Not yet implemented")
         }
+
 
 }
