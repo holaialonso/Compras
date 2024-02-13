@@ -147,9 +147,13 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
             TODO("Not yet implemented")
         }
 
-        override fun onPrintTotalCart(total: Double) {
+        override fun onPrintTotalCart(total: Double, type: String) {
             TODO("Not yet implemented")
         }
+
+    override fun onShowEmptyCart() {
+        TODO("Not yet implemented")
+    }
 
 
     //JSON
