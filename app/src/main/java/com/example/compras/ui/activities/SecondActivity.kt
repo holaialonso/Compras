@@ -1,5 +1,6 @@
 package com.example.compras.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -166,7 +167,7 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
 
             //Elimino el elemento del cart
             ProductAdapter.removeElement(position)
-
+            cart.removeAt(position)
         }
 
         override fun onPrintTotalCart(total: String, type : String) {
@@ -188,10 +189,16 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
             showEmptyCart()
         }
 
+
+
     //CART -> PASARLO A LA MAINACTIVITY
     override fun onBackPressed() {
 
-        intent.putExtra("cart", cart) //paso la variable a la mainActivity
+        val intent : Intent = Intent (this, MainActivity::class.java)
+        intent.putExtra("cart", cart) //paso el carrito de una pantalla a otra
+        startActivity(intent)
+       // println("items en el carrito ->"+cart.size)
+       // intent.putExtra("cart", cart) //paso la variable a la mainActivity
         super.onBackPressed()
 
     }

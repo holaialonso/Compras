@@ -1,5 +1,6 @@
 package com.example.compras.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -26,17 +27,23 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 
-class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter.onRecyclerProductListener {
+/*
+
+            spinnerCategory.setSelection(selectedIndex, true)
+ */
+
+class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter.onRecyclerProductListener{
 
     //Fichero -> me traigo el layout (activity_main.xml)
     private lateinit var binding: ActivityMainBinding
 
     //Variables globales
     private lateinit var spinnerCategory : Spinner
-    private lateinit var recyclerProducts : Recycler
+    private lateinit var recyclerProducts : RecyclerView
     private lateinit var ProductAdapter : ProductAdapter
     private lateinit var SpinnerCategoriesAdapter : ArrayAdapter<String>
     private lateinit var cart : ArrayList<Product>
+    private var selectedIndex : Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,18 +56,18 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
         //Cart
             cart = ArrayList()
 
-            //1. Si tiene el estado guardado
+            //1. Si tiene el estado guardado -> lo recupero
             if (savedInstanceState != null) {
-                print("Recupero el estado")
                 val savedArrayList = savedInstanceState.getSerializable("cart")
                 if (savedArrayList is ArrayList<*>) {
                     cart = savedArrayList as ArrayList<Product>
                 }
             }
 
+
             //2. Compruebo si viene de la secondActivity -> si lo tengo, lo inicializo con ese valor
             if (intent.hasExtra("cart")) {
-                cart = intent.extras!!.getSerializable("cart") as ArrayList<Product>
+               cart = intent.extras!!.getSerializable("cart") as ArrayList<Product>
             }
 
 
@@ -70,13 +77,17 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
 
         //Spinner
             spinnerCategory = findViewById(R.id.select_categories) //hago el binding
+            selectedIndex = savedInstanceState?.getInt("selectedIndex") ?: selectedIndex //recojo el valor de la opción seleccionada
 
             SpinnerCategoriesAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item) //adaptador del spinner
             SpinnerCategoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
             makeCategoryProducts() //después de declarar el adaptador -> relleno los items del spinner
 
             spinnerCategory.adapter = SpinnerCategoriesAdapter
 
+
+            //Eventos
             binding.selectCategories.onItemSelectedListener = object : OnItemSelectedListener{
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -84,6 +95,7 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
                     position: Int,
                     id: Long
                 ) {
+
                     val optionSelected = parent!!.adapter.getItem(position).toString()
                     ProductAdapter.makeFilter(optionSelected)
 
@@ -93,8 +105,7 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
                         emptyProducts.visibility = View.INVISIBLE
                     }
                     else{ //Resto de categorías
-                        if(ProductAdapter.getItemCount()==0) {
-                            println("no tenemos productos para mostrar")
+                        if(ProductAdapter.getItemCount()==0) { //no tengo elementos para mostrar
                             emptyProducts.visibility = View.VISIBLE
                         }
                         else{
@@ -115,20 +126,22 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
             ProductAdapter = ProductAdapter(ArrayList(), this, "main")
             makeListProducts()
 
-            val recyclerProducts: RecyclerView = findViewById(R.id.recycler_products)
+            recyclerProducts = findViewById(R.id.recycler_products)
             recyclerProducts.adapter = ProductAdapter
             recyclerProducts.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
 
     }
 
-
     //ESTADO -> PORTRAIT <-> LANDSCAPE
         //Método para guardar el estado
         override fun onSaveInstanceState(outState: Bundle) {
-            println("serializado cart ->"+cart.size)
+
             super.onSaveInstanceState(outState)
             outState.putSerializable("cart", cart)
+            outState.putInt("selectedIndex", spinnerCategory.selectedItemPosition)
+
         }
+
 
     //MENÚ
         override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -174,9 +187,10 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
             TODO("Not yet implemented")
         }
 
-    override fun onShowEmptyCart() {
-        TODO("Not yet implemented")
-    }
+        override fun onShowEmptyCart() {
+            TODO("Not yet implemented")
+        }
+
 
 
     //JSON
@@ -224,6 +238,10 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
                         val category = response.getString(i)
                         SpinnerCategoriesAdapter.add(formatLiteral(category))
                     }
+
+                    //Selecciono en la lista el elemento
+                    spinnerCategory.setSelection(selectedIndex)
+
                 },
                { error ->
                     // Manejar errores de la solicitud
@@ -233,6 +251,8 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
 
             //Hago la petición
             Volley.newRequestQueue(applicationContext).add(request)
+
+
         }
 
         //Método para limpiar la categoría del producto y ponerla bonita (que no salgan cosas como womens-watches)
@@ -255,4 +275,8 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
         }
 
 
+
+
 }
+
+
