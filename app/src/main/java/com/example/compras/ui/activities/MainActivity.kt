@@ -27,10 +27,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 
-/*
-
-            spinnerCategory.setSelection(selectedIndex, true)
- */
 
 class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter.onRecyclerProductListener{
 
@@ -191,6 +187,9 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener, ProductAdapter
             TODO("Not yet implemented")
         }
 
+        override fun onUpdateCart( products : ArrayList<Product>) {
+            TODO("Not yet implemented")
+        }
 
 
     //JSON

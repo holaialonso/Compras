@@ -164,10 +164,8 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
         }
 
         override fun onProductSelectedRemove(position: Int) {
-
             //Elimino el elemento del cart
             ProductAdapter.removeElement(position)
-            cart.removeAt(position)
         }
 
         override fun onPrintTotalCart(total: String, type : String) {
@@ -189,6 +187,9 @@ class SecondActivity : AppCompatActivity(), ProductAdapter.onRecyclerProductList
             showEmptyCart()
         }
 
+        override fun onUpdateCart( products : ArrayList<Product>) {
+            cart = products
+        }
 
 
     //CART -> PASARLO A LA MAINACTIVITY
